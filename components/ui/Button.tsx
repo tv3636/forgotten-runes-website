@@ -13,6 +13,7 @@ const ButtonElement = styled.a<Props>`
   display: inline-block;
   text-align: center;
   text-decoration: none;
+  cursor: pointer;
 
   ${(props) => {
     switch (props.size) {
