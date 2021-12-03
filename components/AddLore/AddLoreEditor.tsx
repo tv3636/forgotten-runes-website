@@ -90,6 +90,7 @@ const topLevelPlugins = [
 
 export const markdownToDraftState = (text: string) => {
   const rawData = markdownToDraft(text, {
+    preserveNewlines: true,
     blockTypes: {
       image: function (item: any) {
         return {
@@ -100,7 +101,6 @@ export const markdownToDraftState = (text: string) => {
         };
       },
     },
-
     blockEntities: {
       image: function (item: any) {
         console.log(item);
@@ -124,7 +124,7 @@ export const markdownToDraftState = (text: string) => {
       },
     },
   });
-  console.log(rawData);
+  // console.log(rawData);
 
   // @ts-ignore
   const contentState = convertFromRaw(rawData);
