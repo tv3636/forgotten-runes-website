@@ -23,6 +23,15 @@ const Description = styled.div`
   color: #585858;
 `;
 
+const Category = styled.a`
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #a647ff !important;
+  font-size: 12px;
+  display: block;
+  text-decoration: none;
+`;
+
 const BlogPostTitle = styled.h2`
   /* min-height: 2.4em; */
   font-size: 1.5rem !important;
@@ -79,6 +88,14 @@ export default function BlogEntry({ post }: Props) {
             </BlogPostImgWrapInner>
           </BlogPostImgWrap>
         </StyledImageAnchor>
+      </Link>
+
+      <Link
+        as={post.data.category ? `/category/${post.data.category}` : "/posts"}
+        href={post.data.category ? `/category/${post.data.category}` : "/posts"}
+        passHref={true}
+      >
+        <Category>{post.data.category || "Post"}</Category>
       </Link>
 
       <Link
