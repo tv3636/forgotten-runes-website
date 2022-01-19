@@ -30,6 +30,7 @@ const Category = styled.a`
   font-size: 12px;
   display: block;
   text-decoration: none;
+  margin-bottom: 4px;
 `;
 
 const BlogPostTitle = styled.h2`
