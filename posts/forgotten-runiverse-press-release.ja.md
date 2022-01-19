@@ -3,6 +3,7 @@ title: "Bisonic IncとMagic MachineがForgotten Runes Wizard's Cultのメタバ�
 description: ""
 ogImage: https://i.imgur.com/60VfzuZ.png
 index: 23
+category: announcements
 ---
 
 BISONIC INCはMAGIC MACHINEとFORGOTTEN RUNES WIZARD CULT’Sのメタバース制作に向けたパートナー契約を締結しました。
