@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps = async ({
     })
   );
   posts = posts.filter((p) => p.data.category === slug);
-  posts = pickBestByLocale(locale || "default", posts);
+  posts = compact(pickBestByLocale(locale || "default", posts));
 
   return { props: { posts, slug } };
 };
@@ -87,7 +87,6 @@ export const getStaticPaths: GetStaticPaths = async ({
   locales,
   defaultLocale,
 }) => {
-  console.log("locales: ", locales);
   let posts: Post[] = compact(
     postFilePaths.map((filePath) => {
       const { basename, localeExt } = fileLocale(filePath);
@@ -111,6 +110,10 @@ export const getStaticPaths: GetStaticPaths = async ({
   let categories = uniqBy(
     posts.map((p) => {
       let locale = p.locale === "default" ? "en-US" : p.locale;
+      if (!p.data.category) {
+        console.log(`Post has no category ${p.filePath}`);
+      }
+
       return {
         locale,
         category: p.data.category || "Post",
@@ -121,7 +124,7 @@ export const getStaticPaths: GetStaticPaths = async ({
   );
 
   const paths = categories.map((cat) => {
-    return { params: { slug: cat.category }, locale: cat.locale };
+    return { params: { slug: cat.category || "Post" }, locale: cat.locale };
   });
 
   return {

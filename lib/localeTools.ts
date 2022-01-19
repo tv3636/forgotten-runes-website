@@ -1,5 +1,5 @@
 import path from "path";
-import { forEach, groupBy, keyBy } from "lodash";
+import { compact, forEach, groupBy, keyBy } from "lodash";
 import { Post } from "../components/Blog/types";
 
 export const pickBestByLocale = (locale: string, files: Post[]): Post[] => {
