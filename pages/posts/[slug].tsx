@@ -88,6 +88,7 @@ const StyledImageWrap = styled.div`
   }
 
   img {
+    image-rendering: pixelated;
     width: 100%;
     height: 100%;
     object-fit: cover;

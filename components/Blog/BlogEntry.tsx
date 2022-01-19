@@ -59,6 +59,7 @@ const BlogPostImgWrap = styled.div`
 `;
 const BlogPostImgWrapInner = styled.div`
   img {
+    image-rendering: pixelated;
     position: absolute;
     left: 0;
     top: 0;
