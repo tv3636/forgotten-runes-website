@@ -16,6 +16,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { ResponsiveImg } from "../../components/ResponsivePixelImg";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 import Codepen from "react-codepen-embed";
+import WizardHeads from "../../components/Post/WizardHeads";
 
 // import CustomLink from "../../components/CustomLink";
 // Custom components/renderers to pass to MDX.
@@ -33,6 +34,7 @@ const components = {
   ResponsiveImg,
   TwitterTweetEmbed,
   Codepen,
+  WizardHeads,
 };
 
 const NavAnchor = styled.a`
