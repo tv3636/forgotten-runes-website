@@ -9,6 +9,21 @@ type Props = {
   size?: string;
 };
 
+/* decouple this layout for other situations like related posts */
+export const StandaloneWideLayout = styled.div`
+  display: grid;
+  grid-template-columns:
+    1fr min(1370px, calc(100% - 32px))
+    1fr;
+  grid-column-gap: 16px;
+  grid-auto-rows: max-content;
+  padding-bottom: 2em;
+
+  & > * {
+    grid-column: 2;
+  }
+`;
+
 const AboutWrapper = styled.div<{ size?: string }>`
   min-height: 95vh;
   color: #e2ded6;
