@@ -1,8 +1,9 @@
 ---
 title: "Bisonic Inc Partners with Magic Machine to Create Forgotten Runes Wizard's Cult Metaverse - Create-to-earn MMO"
-description: ""
+description: "Bisonic and Magic Machine have partnered to create an MMO-RPG create-to-earn metaverse game in the world of the Forgotten Runes Wizards"
 ogImage: https://i.imgur.com/60VfzuZ.png
 index: 23
+category: announcements
 ---
 
 BISONIC INC PARTNERS WITH MAGIC MACHINE

@@ -8,7 +8,7 @@ import path from "path";
 import styled from "@emotion/styled";
 import Layout from "../../components/InfoPageLayout";
 import WizardArt from "../../components/WizardArt";
-import OgImage from "../../components/OgImage";
+import OgImage, { ogImagePropsFromFrontMatter } from "../../components/OgImage";
 import { postFilePaths, POSTS_PATH } from "../../lib/mdxUtils";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -17,6 +17,9 @@ import { ResponsiveImg } from "../../components/ResponsivePixelImg";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 import Codepen from "react-codepen-embed";
 import WizardHeads from "../../components/Post/WizardHeads";
+import { getStatic__allBlogPosts } from "../../components/Blog/blogUtils";
+import { Post } from "../../components/Blog/types";
+import RelatedPosts from "../../components/Blog/RelatedPosts";
 
 // import CustomLink from "../../components/CustomLink";
 // Custom components/renderers to pass to MDX.
@@ -49,23 +52,25 @@ const NavAnchor = styled.a`
 export default function PostPage({
   source,
   frontMatter,
+  allPosts,
 }: {
   source: { compiledSource: string; scope: any };
   frontMatter: any;
+  allPosts: Post[];
 }) {
   const title = `${frontMatter.title} | Forgotten Runes Wizard's Cult: 10,000 on-chain Wizard NFTs`;
-  let ogImageProps: any = {
-    title: frontMatter.title,
-  };
-  if (frontMatter.ogWizardImage) {
-    ogImageProps.wizardImage = parseInt(frontMatter.ogWizardImage);
-  }
-  if (frontMatter.ogImage) {
-    ogImageProps.images = frontMatter.ogImage;
-  }
+  let ogImageProps = ogImagePropsFromFrontMatter(frontMatter);
+
+  const afterContent = (
+    <RelatedPosts thisFrontMatter={frontMatter} allPosts={allPosts} />
+  );
 
   return (
-    <Layout title={title} description={frontMatter.description}>
+    <Layout
+      title={title}
+      description={frontMatter.description}
+      afterContent={afterContent}
+    >
       <OgImage {...ogImageProps} />
       <header>
         {/* <nav>
@@ -103,8 +108,6 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     ? localizedPostFilePath
     : postFilePath;
 
-  console.log("postFilePathToLoad: ", postFilePathToLoad);
-
   const source = fs.readFileSync(postFilePathToLoad);
   const { content, data } = matter(source);
   const mdxSource = await serialize(content, {
@@ -115,10 +118,13 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     scope: data,
   });
 
+  const allPostProps = await getStatic__allBlogPosts({ params, locale });
+
   return {
     props: {
       source: mdxSource,
       frontMatter: data,
+      allPosts: (allPostProps as any).props?.posts || [],
     },
   };
 };
