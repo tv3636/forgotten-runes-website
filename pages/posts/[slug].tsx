@@ -8,7 +8,7 @@ import path from "path";
 import styled from "@emotion/styled";
 import Layout from "../../components/InfoPageLayout";
 import WizardArt from "../../components/WizardArt";
-import OgImage from "../../components/OgImage";
+import OgImage, { ogImagePropsFromFrontMatter } from "../../components/OgImage";
 import { postFilePaths, POSTS_PATH } from "../../lib/mdxUtils";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -54,15 +54,7 @@ export default function PostPage({
   frontMatter: any;
 }) {
   const title = `${frontMatter.title} | Forgotten Runes Wizard's Cult: 10,000 on-chain Wizard NFTs`;
-  let ogImageProps: any = {
-    title: frontMatter.title,
-  };
-  if (frontMatter.ogWizardImage) {
-    ogImageProps.wizardImage = parseInt(frontMatter.ogWizardImage);
-  }
-  if (frontMatter.ogImage) {
-    ogImageProps.images = frontMatter.ogImage;
-  }
+  let ogImageProps = ogImagePropsFromFrontMatter(frontMatter);
 
   return (
     <Layout title={title} description={frontMatter.description}>

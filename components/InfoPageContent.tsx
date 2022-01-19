@@ -6,9 +6,10 @@ import styled from "@emotion/styled";
 
 type Props = {
   children?: ReactNode;
+  size?: string;
 };
 
-const AboutWrapper = styled.div`
+const AboutWrapper = styled.div<{ size?: string }>`
   min-height: 95vh;
   color: #e2ded6;
 
@@ -16,7 +17,12 @@ const AboutWrapper = styled.div`
   /* justify-content: center; */
 
   display: grid;
-  grid-template-columns: 1fr min(60ch, calc(100% - 32px)) 1fr;
+  grid-template-columns:
+    1fr min(
+      ${(props) => (props.size === "wide" ? "1370px" : "60ch")},
+      calc(100% - 32px)
+    )
+    1fr;
   grid-column-gap: 16px;
   grid-auto-rows: max-content;
   padding-bottom: 2em;
@@ -135,8 +141,8 @@ const AboutWrapper = styled.div`
   }
 `;
 
-const InfoPageLayout = ({ children }: Props) => (
-  <AboutWrapper>
+const InfoPageLayout = ({ size, children }: Props) => (
+  <AboutWrapper size={size}>
     {/* <div className="content">{children}</div> */}
     {children}
   </AboutWrapper>

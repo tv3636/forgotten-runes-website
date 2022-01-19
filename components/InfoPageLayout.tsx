@@ -11,17 +11,19 @@ type Props = {
   title?: string;
   headerImgUrl?: string;
   description?: string;
+  size?: string;
 };
 
 const InfoPageLayout = ({
   children,
   headerImgUrl,
   description,
+  size,
   title = "Forgotten Runes Wizard's Cult: 10,000 on-chain Wizard NFTs",
 }: Props) => (
   <Layout title={title} description={description}>
     {headerImgUrl && <ResponsivePixelImg src={headerImgUrl} />}
-    <InfoPageContent>{children}</InfoPageContent>
+    <InfoPageContent size={size}>{children}</InfoPageContent>
   </Layout>
 );
 
