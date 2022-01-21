@@ -21,7 +21,7 @@ import { BigNumber } from "ethers";
 import { useEthers } from "@usedapp/core";
 import { Contract as EthCallContract, Provider as EthCallProvider } from "ethcall";
 import { PONIES_ABI } from "../../contracts/abis";
-import { Web3Provider } from "@ethersproject/providers";
+import { Network, Web3Provider } from "@ethersproject/providers";
 
 const wizData = productionWizardData as { [wizardId: string]: any };
 const soulsData = (
@@ -154,7 +154,7 @@ export function WizardList({ onWizardPicked }: {
     async function run() {
       console.log("getting characters");
       try {
-        const { chainId } = await library?.getNetwork();
+        const { chainId } = (await library?.getNetwork()) as Network;
 
         const wizardsContract = await getWizardsContract({
           provider: library,

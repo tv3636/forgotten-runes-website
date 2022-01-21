@@ -163,5 +163,5 @@ export default function IndividualLorePage({
 
 
   return <BookOfLorePage bg={bgColor}> {story &&
-    <LoreMarkdownRenderer isViewMode={true} markdown={story} bgColor={bgColor} />}</BookOfLorePage>;
+    <LoreMarkdownRenderer markdown={story} bgColor={bgColor} />}</BookOfLorePage>;
 }

@@ -104,7 +104,6 @@ const WriteLore = ({}: {}) => {
       {!pickedToken && !isEditMode && <>
         <Flex flexDirection="column" alignItems={"flex-start"} p={6} width={"100%"}>
           <WizardList
-            injectedProvider={library}
             onWizardPicked={setPickedToken}
           />
         </Flex></>}
@@ -174,8 +173,8 @@ const WriteLore = ({}: {}) => {
             <Flex flex={1} flexDirection={"row"} justifyContent={"flex-end"} alignItems={"center"}>
               <NSFWField name="isNsfw" onChange={setNsfw} />
               <Spacer pl={2} />
-              <BackgroundColorPickerField currentBackgroundColor={currentBgColor ?? "#000000"}
-                                          onChange={(color) => setCurrentBgColor(color)} />
+              <BackgroundColorPickerField name="color-picker" currentBackgroundColor={currentBgColor ?? "#000000"}
+                                          onChange={(color) => setCurrentBgColor(color ?? "#000000")} />
             </Flex>
             <Flex flex={1} pl={2} flexDirection={"row"} justifyContent={"flex-end"} alignItems={"center"}>
               <i>Gas approx {parseInt(formatUnits(gas ?? BigNumber.from(0), "gwei"))} gwei</i>

@@ -103,6 +103,9 @@ export function getSlugFromTag(tag: string) {
   if (tag.toLowerCase() === "pony") {
     return "ponies";
   }
+
+
+  return "uknownslug";
 }
 
 export function getTokenImageSrc(tokenId: string, tokenAddress: string) {

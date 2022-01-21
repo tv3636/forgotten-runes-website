@@ -6,6 +6,7 @@ import {
   SOULS_ABI,
   WIZARDS_ABI,
 } from "./abis";
+import { Network } from "@ethersproject/providers";
 
 export const WIZARDS_CONTRACT_ADDRESS: { [chainId: number]: string } = {
   4: `0x2BC27A0786B0b07b6061710C59FcF6Ce91D77080`,
@@ -39,9 +40,12 @@ export async function getWizardsContract({
   provider: any;
   chainId?: number;
 }) {
+
   if (!chainId) {
-    chainId = await provider.getNetwork();
+    const { chainId: resolvedChainId } = (await provider.getNetwork()) as Network;
+    chainId = resolvedChainId;
   }
+
   const wizardsAddress = WIZARDS_CONTRACT_ADDRESS[chainId];
   if (!wizardsAddress) {
     throw new Error("Specify contract address");
@@ -90,7 +94,8 @@ export async function getSoulsContract({
   chainId?: number;
 }) {
   if (!chainId) {
-    chainId = await provider.getNetwork();
+    const { chainId: resolvedChainId } = (await provider.getNetwork()) as Network;
+    chainId = resolvedChainId;
   }
   return new ethers.Contract(
     FORGOTTEN_SOULS_ADDRESS[chainId as number],
@@ -107,7 +112,8 @@ export async function getPoniesContract({
   chainId?: number;
 }) {
   if (!chainId) {
-    chainId = await provider.getNetwork();
+    const { chainId: resolvedChainId } = (await provider.getNetwork()) as Network;
+    chainId = resolvedChainId;
   }
 
   return new ethers.Contract(
