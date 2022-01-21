@@ -1,8 +1,10 @@
 import client from "../../lib/graphql";
 import { gql } from "@apollo/client";
 import {
-  CHARACTER_CONTRACTS, isPoniesContract, isSoulsContract,
-  isWizardsContract
+  CHARACTER_CONTRACTS,
+  isPoniesContract,
+  isSoulsContract,
+  isWizardsContract,
 } from "../../contracts/ForgottenRunesWizardsCultContract";
 import { getLoreUrl } from "./loreUtils";
 import path from "path";
@@ -26,9 +28,9 @@ const COMMON_LORE_FIELDS = `
 
 const LORE_CACHE = path.join(os.tmpdir(), ".lore_cache");
 
-const getCacheLocation = (tokenAddress:string) => {
-  return `${LORE_CACHE}_${tokenAddress.toLowerCase()}`
-}
+const getCacheLocation = (tokenAddress: string) => {
+  return `${LORE_CACHE}_${tokenAddress.toLowerCase()}`;
+};
 
 const WIZARDS_THAT_HAVE_LORE_CACHE = path.join(
   os.tmpdir(),
@@ -36,13 +38,11 @@ const WIZARDS_THAT_HAVE_LORE_CACHE = path.join(
 );
 
 export async function bustLoreCache() {
-  const files =
-    Object.entries(
-      CHARACTER_CONTRACTS
-    ).map(([tokenSlug, tokenAddress]) => getCacheLocation(tokenAddress));
+  const files = Object.entries(CHARACTER_CONTRACTS).map(
+    ([tokenSlug, tokenAddress]) => getCacheLocation(tokenAddress)
+  );
 
   files.push(WIZARDS_THAT_HAVE_LORE_CACHE);
-
 
   for (let index in files) {
     const file = files[index];
@@ -95,8 +95,8 @@ export async function getLoreInChapterForm(
           query: gql`
               query WizardLore {
                   loreTokens(skip: ${
-                i * 999
-              }, first: 999, orderBy: tokenId, orderDirection: asc, where: {tokenContract: "${tokenContract}"}) {
+                    i * 999
+                  }, first: 999, orderBy: tokenId, orderDirection: asc, where: {tokenContract: "${tokenContract}"}) {
                       tokenContract
                       tokenId
                       lore(
@@ -109,7 +109,7 @@ export async function getLoreInChapterForm(
                   }
               }
           `,
-          fetchPolicy: "no-cache"
+          fetchPolicy: "no-cache",
         })
       )
     );
@@ -128,8 +128,8 @@ export async function getLoreInChapterForm(
               loreMetadataURI: loreEntry.loreMetadataURI,
               createdAtTimestamp: loreEntry.createdAtTimestamp,
               creator: loreEntry.creator,
-              index: loreEntry.index
-            }))
+              index: loreEntry.index,
+            })),
           };
         })
       );
@@ -177,14 +177,14 @@ export async function getLeftRightPages(
       isEmpty: true,
       bgColor: `#000000`,
       firstImage: null,
-      pageNumber: leftPageNum
+      pageNumber: leftPageNum,
     };
 
     rightPage = {
       isEmpty: true,
       bgColor: "#000000",
       firstImage: null,
-      pageNumber: rightPageNum
+      pageNumber: rightPageNum,
     };
   } else {
     const lore = loreInChapterForm[chapterIndexForToken]?.lore ?? [];
@@ -204,7 +204,7 @@ export async function getLeftRightPages(
       leftPage = {
         isEmpty: true,
         bgColor: `#000000`,
-        firstImage: null
+        firstImage: null,
       };
     }
     leftPage.pageNumber = leftPageNum;
@@ -224,7 +224,7 @@ export async function getLeftRightPages(
       rightPage = {
         isEmpty: true,
         bgColor: "#000000",
-        firstImage: null
+        firstImage: null,
       };
     }
     rightPage.pageNumber = rightPageNum;
@@ -325,7 +325,7 @@ export async function getWizardsWithLore(): Promise<{
                 loreTokens(first: 999, orderBy: tokenId, orderDirection: asc, where: {tokenContract: "${CHARACTER_CONTRACTS.wizards}"}) {
                     tokenId
                 }
-            }`
+            }`,
       });
 
       results = (data?.loreTokens ?? []).reduce(

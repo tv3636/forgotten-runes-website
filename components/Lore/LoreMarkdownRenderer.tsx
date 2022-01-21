@@ -7,26 +7,36 @@ import { IPFS_HTTP_SERVER, TextPage } from "./IndividualLorePage";
 import Link from "next/link";
 import productionWizardData from "../../data/nfts-prod.json";
 import { getContrast } from "../../lib/colorUtils";
-import { getContractFromTokenSlug, getSlugFromTag, getTokenName } from "../../lib/nftUtilis";
+import {
+  getContractFromTokenSlug,
+  getSlugFromTag,
+  getTokenName,
+} from "../../lib/nftUtilis";
 
 const wizData = productionWizardData as { [wizardId: string]: any };
 const TOKEN_TAG_REGEX = /\@(wizard|soul|pony)([0-9]+)/gm;
 
 const LoreMarkdownRenderer = ({
-                                markdown,
-                                bgColor = "#000000"
-                              }: { markdown: string, bgColor: string | undefined, }) => {
+  markdown,
+  bgColor = "#000000",
+}: {
+  markdown: any;
+  bgColor: string | undefined;
+  isViewMode: boolean;
+}) => {
   const textColor = getContrast(bgColor ?? "#000000");
 
   return (
-    <TextPage style={{ color: textColor, backgroundColor: bgColor ?? "#000000" }}>
+    <TextPage
+      style={{ color: textColor, backgroundColor: bgColor ?? "#000000" }}
+    >
       <ReactMarkdown
         children={markdown}
         components={{
           pre: ({ node, children, ...props }) => (
             <pre {...props} style={{ whiteSpace: "pre-line" }}>
-            {children}
-          </pre>
+              {children}
+            </pre>
           ),
           p: ({ node, children, ...props }) => {
             let processedChildren = [];
@@ -36,28 +46,24 @@ const LoreMarkdownRenderer = ({
 
               if (typeof child === "string") {
                 if (child.startsWith("https://www.youtube.com")) {
-                  processedChildren.push(<ReactPlayer url={child} width={"100%"} />);
+                  processedChildren.push(
+                    <ReactPlayer url={child} width={"100%"} />
+                  );
                 } else {
                   const tokenTagMatches = [...child.matchAll(TOKEN_TAG_REGEX)];
 
                   if (tokenTagMatches.length > 0) {
                     tokenTagMatches.forEach((match, index) => {
-                      // @ts-ignore
                       const priorMatchEnd = index === 0 ? 0 : tokenTagMatches[index - 1].index + tokenTagMatches[index - 1][0].length;
 
-                      const tagType = match[1]; // e.g. "wizard"
-                      const slug = getSlugFromTag(tagType);
-                      const tokenId = match[2];
-
-                      const name = getTokenName(tokenId, getContractFromTokenSlug(slug));
+                      const slug = getSlugFromTag(match[1]);
+                      const name = getTokenName(match[2], getContractFromTokenSlug(slug));
 
                       processedChildren.push(child.slice(priorMatchEnd, match.index));
-                      processedChildren.push(<Link href={`/lore/slug/${tokenId}`}>{name}</Link>);
+                      processedChildren.push(<Link href={`/lore/slug/${match[2]}`}>{name}</Link>);
 
                       if (index === tokenTagMatches.length - 1) {
-                        const fullMatchedWord = match[0]; // e.g. @wizard123
-                        // @ts-ignore
-                        processedChildren.push(child.slice(match.index + fullMatchedWord.length));
+                        processedChildren.push(child.slice(match.index + match[0].length));
                       }
                     });
                   } else {
@@ -93,8 +99,15 @@ const LoreMarkdownRenderer = ({
 
             const [imgSrc, setImgSrc] = useState<string>(newSrc);
             const onError = () => setImgSrc(fallbackSrc);
-            return <img {...props} style={{ maxWidth: "100%", height: "auto" }} src={imgSrc} onError={onError} />;
-          }
+            return (
+              <img
+                {...props}
+                style={{ maxWidth: "100%", height: "auto" }}
+                src={imgSrc}
+                onError={onError}
+              />
+            );
+          },
         }}
       />
     </TextPage>

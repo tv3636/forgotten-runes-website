@@ -9,7 +9,7 @@ import {
   getWizardsContract,
   isPoniesContract,
   isSoulsContract,
-  isWizardsContract
+  isWizardsContract,
 } from "../contracts/ForgottenRunesWizardsCultContract";
 
 import productionWizardData from "../data/nfts-prod.json";
@@ -63,12 +63,12 @@ export async function getTokenDataForAllCollections(
 
   const tokensAndUris = await Promise.all([
     getTokensAndUrisForAddress(wizardsContract, address, mainProvider),
-    getTokensAndUrisForAddress(soulsContract, address, mainProvider)
+    getTokensAndUrisForAddress(soulsContract, address, mainProvider),
   ]);
 
   const tokenData = {
     wizards: tokensAndUris[0],
-    souls: tokensAndUris[1]
+    souls: tokensAndUris[1],
   };
   return tokenData;
 }
@@ -76,7 +76,11 @@ export async function getTokenDataForAllCollections(
 export function getContractFromTokenSlug(slug: string) {
   return slug === "wizards"
     ? CHARACTER_CONTRACTS.wizards
-    : slug === "souls" ? CHARACTER_CONTRACTS.souls : slug === "ponies" ? CHARACTER_CONTRACTS.ponies : "0xunknown";
+    : slug === "souls"
+    ? CHARACTER_CONTRACTS.souls
+    : slug === "ponies"
+    ? CHARACTER_CONTRACTS.ponies
+    : "0xunknown";
 }
 
 export function getTokenName(tokenId: string, tokenAddress: string) {
@@ -89,7 +93,6 @@ export function getTokenName(tokenId: string, tokenAddress: string) {
     return poniesData?.[tokenId]?.name ?? `Pony #${tokenId}`;
   }
 }
-
 
 export function getSlugFromTag(tag: string) {
   if (tag.toLowerCase() === "wizard") {
