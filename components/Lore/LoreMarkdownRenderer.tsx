@@ -53,22 +53,34 @@ const LoreMarkdownRenderer = ({
                   if (tokenTagMatches.length > 0) {
                     tokenTagMatches.forEach((match, index) => {
                       // @ts-ignore
-                      const priorMatchEnd = index === 0 ? 0 : tokenTagMatches[index - 1].index + tokenTagMatches[index - 1][0].length;
+                      const priorMatchEnd =
+                        index === 0
+                          ? 0
+                          : tokenTagMatches[index - 1].index +
+                            tokenTagMatches[index - 1][0].length;
 
                       const tagType = match[1]; // e.g. "wizard"
                       const slug = getSlugFromTag(tagType);
                       const tokenId = match[2];
 
-                      const name = getTokenName(tokenId, getContractFromTokenSlug(slug));
+                      const name = getTokenName(
+                        tokenId,
+                        getContractFromTokenSlug(slug)
+                      );
 
-                      processedChildren.push(child.slice(priorMatchEnd, match.index));
-                      processedChildren.push(<Link href={`/lore/slug/${tokenId}`}>{name}</Link>);
+                      processedChildren.push(
+                        child.slice(priorMatchEnd, match.index)
+                      );
+                      processedChildren.push(
+                        <Link href={`/lore/slug/${tokenId}`}>{name}</Link>
+                      );
 
                       if (index === tokenTagMatches.length - 1) {
                         const fullMatchedWord = match[0]; // e.g. @wizard123
                         // @ts-ignore
-                        processedChildren.push(child.slice(match.index + fullMatchedWord.length));
-
+                        processedChildren.push(
+                          child.slice(match.index + fullMatchedWord.length)
+                        );
                       }
                     });
                   } else {
