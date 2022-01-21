@@ -140,9 +140,7 @@ const WriteLore = ({}: {}) => {
             p={6}
             width={"100%"}
           >
-            <WizardList
-              onWizardPicked={setPickedToken}
-            />
+            <WizardList onWizardPicked={setPickedToken} />
           </Flex>
         </>
       )}
