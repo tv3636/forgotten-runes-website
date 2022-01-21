@@ -72,7 +72,7 @@ const LoreMarkdownRenderer = ({
                         child.slice(priorMatchEnd, match.index)
                       );
                       processedChildren.push(
-                        <Link href={`/lore/slug/${tokenId}`}>{name}</Link>
+                        <Link href={`/lore/${slug}/${tokenId}`}>{name}</Link>
                       );
 
                       if (index === tokenTagMatches.length - 1) {
