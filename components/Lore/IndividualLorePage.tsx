@@ -162,12 +162,7 @@ export default function IndividualLorePage({
   return (
     <BookOfLorePage bg={bgColor}>
       {" "}
-      {story && (
-        <LoreMarkdownRenderer
-          markdown={story}
-          bgColor={bgColor}
-        />
-      )}
+      {story && <LoreMarkdownRenderer markdown={story} bgColor={bgColor} />}
     </BookOfLorePage>
   );
 }

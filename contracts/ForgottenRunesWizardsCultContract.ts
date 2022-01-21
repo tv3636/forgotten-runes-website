@@ -40,9 +40,9 @@ export async function getWizardsContract({
   provider: any;
   chainId?: number;
 }) {
-
   if (!chainId) {
-    const { chainId: resolvedChainId } = (await provider.getNetwork()) as Network;
+    const { chainId: resolvedChainId } =
+      (await provider.getNetwork()) as Network;
     chainId = resolvedChainId;
   }
 
@@ -94,7 +94,8 @@ export async function getSoulsContract({
   chainId?: number;
 }) {
   if (!chainId) {
-    const { chainId: resolvedChainId } = (await provider.getNetwork()) as Network;
+    const { chainId: resolvedChainId } =
+      (await provider.getNetwork()) as Network;
     chainId = resolvedChainId;
   }
   return new ethers.Contract(
@@ -112,7 +113,8 @@ export async function getPoniesContract({
   chainId?: number;
 }) {
   if (!chainId) {
-    const { chainId: resolvedChainId } = (await provider.getNetwork()) as Network;
+    const { chainId: resolvedChainId } =
+      (await provider.getNetwork()) as Network;
     chainId = resolvedChainId;
   }
 

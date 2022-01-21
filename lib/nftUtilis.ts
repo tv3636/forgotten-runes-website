@@ -107,7 +107,6 @@ export function getSlugFromTag(tag: string) {
     return "ponies";
   }
 
-
   return "uknownslug";
 }
 

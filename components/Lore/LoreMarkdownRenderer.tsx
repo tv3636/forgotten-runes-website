@@ -54,16 +54,29 @@ const LoreMarkdownRenderer = ({
 
                   if (tokenTagMatches.length > 0) {
                     tokenTagMatches.forEach((match, index) => {
-                      const priorMatchEnd = index === 0 ? 0 : tokenTagMatches[index - 1].index + tokenTagMatches[index - 1][0].length;
+                      const priorMatchEnd =
+                        index === 0
+                          ? 0
+                          : tokenTagMatches[index - 1].index +
+                            tokenTagMatches[index - 1][0].length;
 
                       const slug = getSlugFromTag(match[1]);
-                      const name = getTokenName(match[2], getContractFromTokenSlug(slug));
+                      const name = getTokenName(
+                        match[2],
+                        getContractFromTokenSlug(slug)
+                      );
 
-                      processedChildren.push(child.slice(priorMatchEnd, match.index));
-                      processedChildren.push(<Link href={`/lore/slug/${match[2]}`}>{name}</Link>);
+                      processedChildren.push(
+                        child.slice(priorMatchEnd, match.index)
+                      );
+                      processedChildren.push(
+                        <Link href={`/lore/slug/${match[2]}`}>{name}</Link>
+                      );
 
                       if (index === tokenTagMatches.length - 1) {
-                        processedChildren.push(child.slice(match.index + match[0].length));
+                        processedChildren.push(
+                          child.slice(match.index + match[0].length)
+                        );
                       }
                     });
                   } else {
