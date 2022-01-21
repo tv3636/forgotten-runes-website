@@ -13,7 +13,6 @@ import {
   getTokenName,
 } from "../../lib/nftUtilis";
 
-const wizData = productionWizardData as { [wizardId: string]: any };
 const TOKEN_TAG_REGEX = /\@(wizard|soul|pony)([0-9]+)/gm;
 
 const LoreMarkdownRenderer = ({
@@ -22,7 +21,6 @@ const LoreMarkdownRenderer = ({
 }: {
   markdown: any;
   bgColor: string | undefined;
-  isViewMode: boolean;
 }) => {
   const textColor = getContrast(bgColor ?? "#000000");
 
@@ -54,16 +52,23 @@ const LoreMarkdownRenderer = ({
 
                   if (tokenTagMatches.length > 0) {
                     tokenTagMatches.forEach((match, index) => {
+                      // @ts-ignore
                       const priorMatchEnd = index === 0 ? 0 : tokenTagMatches[index - 1].index + tokenTagMatches[index - 1][0].length;
 
-                      const slug = getSlugFromTag(match[1]);
-                      const name = getTokenName(match[2], getContractFromTokenSlug(slug));
+                      const tagType = match[1]; // e.g. "wizard"
+                      const slug = getSlugFromTag(tagType);
+                      const tokenId = match[2];
+
+                      const name = getTokenName(tokenId, getContractFromTokenSlug(slug));
 
                       processedChildren.push(child.slice(priorMatchEnd, match.index));
-                      processedChildren.push(<Link href={`/lore/slug/${match[2]}`}>{name}</Link>);
+                      processedChildren.push(<Link href={`/lore/slug/${tokenId}`}>{name}</Link>);
 
                       if (index === tokenTagMatches.length - 1) {
-                        processedChildren.push(child.slice(match.index + match[0].length));
+                        const fullMatchedWord = match[0]; // e.g. @wizard123
+                        // @ts-ignore
+                        processedChildren.push(child.slice(match.index + fullMatchedWord.length));
+
                       }
                     });
                   } else {

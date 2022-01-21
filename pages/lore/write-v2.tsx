@@ -239,7 +239,7 @@ const WriteLore = ({}: {}) => {
               <BackgroundColorPickerField
                 name={"color-picker"}
                 currentBackgroundColor={currentBgColor ?? "#000000"}
-                onChange={(color) => setCurrentBgColor(color)}
+                onChange={(color) => setCurrentBgColor(color ?? "#000000")}
               />
             </Flex>
             <Flex
