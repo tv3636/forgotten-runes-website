@@ -15,7 +15,7 @@ import { IPFS_SERVER } from "../../constants";
 import {
   isPoniesContract,
   isSoulsContract,
-  isWizardsContract
+  isWizardsContract,
 } from "../../contracts/ForgottenRunesWizardsCultContract";
 import Spacer from "../Spacer";
 import LoreMarkdownRenderer from "./LoreMarkdownRenderer";
@@ -56,7 +56,6 @@ export const TextPage = styled.div<{
   width: 100%;
   height: 100%;
   ${loreTextStyles};
-
 `;
 
 const LoadingPageText = styled.div``;
@@ -88,9 +87,9 @@ export function BookOfLorePage({ bg, children }: BookOfLorePageProps) {
 }
 
 export const CoreCharacterPage = ({
-                                    tokenId,
-                                    tokenAddress
-                                  }: {
+  tokenId,
+  tokenAddress,
+}: {
   tokenId: string;
   tokenAddress: string;
 }) => {
@@ -118,10 +117,10 @@ export const CoreCharacterPage = ({
 };
 
 export const EmptyLorePage = ({
-                                pageNum,
-                                loreTokenSlug,
-                                tokenId
-                              }: {
+  pageNum,
+  loreTokenSlug,
+  tokenId,
+}: {
   pageNum: number;
   loreTokenSlug: "wizards" | "souls";
   tokenId: number;
@@ -152,16 +151,24 @@ export const IPFS_HTTP_SERVER = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD
   : `${IPFS_SERVER}/`;
 
 export default function IndividualLorePage({
-                                             bgColor,
-                                             title,
-                                             story
-                                           }: {
+  bgColor,
+  title,
+  story,
+}: {
   bgColor: string;
   title?: string;
   story?: string;
 }) {
-
-
-  return <BookOfLorePage bg={bgColor}> {story &&
-    <LoreMarkdownRenderer isViewMode={true} markdown={story} bgColor={bgColor} />}</BookOfLorePage>;
+  return (
+    <BookOfLorePage bg={bgColor}>
+      {" "}
+      {story && (
+        <LoreMarkdownRenderer
+          isViewMode={true}
+          markdown={story}
+          bgColor={bgColor}
+        />
+      )}
+    </BookOfLorePage>
+  );
 }

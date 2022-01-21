@@ -10,7 +10,7 @@ import {
   getFirstAvailableWizardLoreUrl,
   getLeftRightPages,
   getLoreInChapterForm,
-  getWizardsWithLore
+  getWizardsWithLore,
 } from "../../../../components/Lore/loreSubgraphUtils";
 import { CHARACTER_CONTRACTS } from "../../../../contracts/ForgottenRunesWizardsCultContract";
 import { getLoreUrl } from "../../../../components/Lore/loreUtils";
@@ -210,7 +210,9 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const tokenId: number = parseInt((context.params?.tokenId as string) ?? "0");
   const pageNum: number = parseInt((context.params?.page as string) ?? "0");
 
-  console.log(`In static props for ${loreTokenSlug}, ${tokenId} page ${pageNum}`);
+  console.log(
+    `In static props for ${loreTokenSlug}, ${tokenId} page ${pageNum}`
+  );
 
   if (pageNum % 2 !== 0) {
     // We always key from right page, so redirect...

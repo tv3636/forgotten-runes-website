@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import {
   getBookOfLoreContract,
-  isWizardsContract
+  isWizardsContract,
 } from "../../contracts/ForgottenRunesWizardsCultContract";
 import { LoreAPISubmitParams } from "../../pages/lore/add";
 import Bluebird from "bluebird";
@@ -50,8 +50,8 @@ export const pinFileToIPFS = async (
       keyvalues: {
         signature: signature,
         token_id: tokenId,
-        token_contract: tokenContract
-      }
+        token_contract: tokenContract,
+      },
     })
   );
 
@@ -62,8 +62,8 @@ export const pinFileToIPFS = async (
       "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
       pinata_api_key: process.env.NEXT_PUBLIC_LORE_IMAGES_PINATA_ID,
       pinata_secret_api_key:
-      process.env.NEXT_PUBLIC_LORE_IMAGES_PINATA_SECRET_KEY
-    }
+        process.env.NEXT_PUBLIC_LORE_IMAGES_PINATA_SECRET_KEY,
+    },
   });
 
   if (uploadResponse.status !== 200 && uploadResponse.status !== 201) {
@@ -75,17 +75,17 @@ export const pinFileToIPFS = async (
 };
 
 export const onSubmitAddLoreForm = async ({
-                                            values,
-                                            currentWizard,
-                                            loreIndex,
-                                            setErrorMessage,
-                                            setSubmitting,
-                                            currentStory,
-                                            currentTitle,
-                                            currentBgColor,
-                                            provider,
-                                            router
-                                          }: any) => {
+  values,
+  currentWizard,
+  loreIndex,
+  setErrorMessage,
+  setSubmitting,
+  currentStory,
+  currentTitle,
+  currentBgColor,
+  provider,
+  router,
+}: any) => {
   console.log("onSubmit", currentWizard, values);
   setErrorMessage(null);
 
@@ -97,7 +97,7 @@ export const onSubmitAddLoreForm = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
 
     console.log("currentWizard?.tokenId: ", currentWizard?.tokenId);
@@ -114,7 +114,7 @@ export const onSubmitAddLoreForm = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setErrorMessage("Need a story to be present");
     return false;
@@ -130,7 +130,7 @@ export const onSubmitAddLoreForm = async ({
         closeOnClick: true,
         pauseOnHover: true,
         draggable: false,
-        progress: undefined
+        progress: undefined,
       }
     );
     setErrorMessage("Need a story to be present");
@@ -157,7 +157,7 @@ export const onSubmitAddLoreForm = async ({
         closeOnClick: true,
         pauseOnHover: true,
         draggable: false,
-        progress: undefined
+        progress: undefined,
       }
     );
     setSubmitting(false);
@@ -167,7 +167,7 @@ export const onSubmitAddLoreForm = async ({
   const signer = provider.getSigner();
 
   const loreContract = await getBookOfLoreContract({
-    provider: provider
+    provider: provider,
   });
 
   toast.info("Signing wizard ID to verify ownership...", {
@@ -177,7 +177,7 @@ export const onSubmitAddLoreForm = async ({
     closeOnClick: true,
     pauseOnHover: true,
     draggable: false,
-    progress: undefined
+    progress: undefined,
   });
 
   let signature: string;
@@ -188,7 +188,7 @@ export const onSubmitAddLoreForm = async ({
       ethers.utils.hexlify(
         ethers.utils.toUtf8Bytes(currentWizard.tokenId.toString())
       ),
-      (await signer.getAddress()).toLowerCase()
+      (await signer.getAddress()).toLowerCase(),
     ]);
   } catch (err: any) {
     console.log("err: ", err);
@@ -199,7 +199,7 @@ export const onSubmitAddLoreForm = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setSubmitting(false);
     return false;
@@ -217,7 +217,7 @@ export const onSubmitAddLoreForm = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     storyWithUploadedImages = await replaceAsync(
       currentStory,
@@ -245,7 +245,7 @@ export const onSubmitAddLoreForm = async ({
         closeOnClick: true,
         pauseOnHover: true,
         draggable: false,
-        progress: undefined
+        progress: undefined,
       }
     );
     setSubmitting(false);
@@ -261,7 +261,7 @@ export const onSubmitAddLoreForm = async ({
     closeOnClick: true,
     pauseOnHover: true,
     draggable: false,
-    progress: undefined
+    progress: undefined,
   });
 
   let loreBody: LoreAPISubmitParams = {
@@ -271,7 +271,7 @@ export const onSubmitAddLoreForm = async ({
     title: currentTitle,
     story: storyWithUploadedImages,
     pixel_art: values?.pixelArt ?? false,
-    bg_color: currentBgColor
+    bg_color: currentBgColor,
   };
 
   console.log("loreBody: ", loreBody);
@@ -282,9 +282,9 @@ export const onSubmitAddLoreForm = async ({
       method: "post",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(loreBody)
+      body: JSON.stringify(loreBody),
     });
 
     apiResponse = await response.json();
@@ -298,7 +298,7 @@ export const onSubmitAddLoreForm = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setSubmitting(false);
     return false;
@@ -316,7 +316,7 @@ export const onSubmitAddLoreForm = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setSubmitting(false);
     return false;
@@ -331,26 +331,26 @@ export const onSubmitAddLoreForm = async ({
       autoClose: false,
       hideProgressBar: false,
       closeOnClick: false,
-      progress: 0
+      progress: 0,
     });
     const connectedLoreContract = await loreContract
       //@ts-ignore
       .connect(signer);
     const tx = loreIndex
       ? await connectedLoreContract.updateLoreMetadataURI(
-        currentWizard.tokenAddress,
-        currentWizard.tokenId,
-        loreIndex,
-        `ipfs://${apiResponse.hash}`
-      )
+          currentWizard.tokenAddress,
+          currentWizard.tokenId,
+          loreIndex,
+          `ipfs://${apiResponse.hash}`
+        )
       : await connectedLoreContract.addLore(
-        currentWizard.tokenAddress,
-        currentWizard.tokenId,
-        0,
-        values.nsfw,
-        `ipfs://${apiResponse.hash}`,
-        { gasLimit: 300000 } //TODO: actual gas limit
-      );
+          currentWizard.tokenAddress,
+          currentWizard.tokenId,
+          0,
+          values.nsfw,
+          `ipfs://${apiResponse.hash}`,
+          { gasLimit: 300000 } //TODO: actual gas limit
+        );
 
     console.log("tx: ", tx);
     // TODO: this should read the connected network and use that block explorer, not an environment variable
@@ -367,7 +367,7 @@ export const onSubmitAddLoreForm = async ({
           </p>
         </Flex>
       ),
-      type: toast.TYPE.INFO
+      type: toast.TYPE.INFO,
     });
 
     const receipt = await tx.wait();
@@ -396,7 +396,7 @@ export const onSubmitAddLoreForm = async ({
             </p>
           </div>
         ),
-        type: toast.TYPE.ERROR
+        type: toast.TYPE.ERROR,
       });
       setSubmitting(false);
       return false;
@@ -410,7 +410,7 @@ export const onSubmitAddLoreForm = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setSubmitting(false);
     return false;
@@ -428,7 +428,8 @@ export const useExistingLoreData = () => {
 
   const isEditMode = editTokenId && editLoreIndex && editTokenAddress;
 
-  const [existingLoreToken, setExistingLoreToken] = useState<WizardConfiguration>();
+  const [existingLoreToken, setExistingLoreToken] =
+    useState<WizardConfiguration>();
   const [existingLore, setExistingLore] = useState<string>();
   const [existingLoreBgColor, setExistingLoreBgColor] = useState<string>();
   const [existingLoreError, setExistingLoreError] = useState<string>();
@@ -440,18 +441,19 @@ export const useExistingLoreData = () => {
       setExistingLoreToken({
         tokenId: editTokenId as string,
         tokenAddress: editTokenAddress as string,
-        name: getTokenName(editTokenId as string, editTokenAddress as string)
+        name: getTokenName(editTokenId as string, editTokenAddress as string),
       });
-
     }
   }, [isEditMode, existingLoreToken]);
 
   useEffect(() => {
     async function fetchCurrentLore() {
-      console.log(`Fetching existing lore for: ${existingLoreToken?.tokenAddress}-${existingLoreToken?.tokenId}`);
+      console.log(
+        `Fetching existing lore for: ${existingLoreToken?.tokenAddress}-${existingLoreToken?.tokenId}`
+      );
 
       const contract = await getBookOfLoreContract({
-        provider: library
+        provider: library,
       });
 
       const loreEntry = await contract.tokenLore(
@@ -486,9 +488,15 @@ export const useExistingLoreData = () => {
     }
   }, [isEditMode, existingLoreToken, existingLore, library]);
 
-  return { isEditMode, existingLoreToken, existingLoreIndex: editLoreIndex, existingLore, existingLoreBgColor, existingLoreError };
+  return {
+    isEditMode,
+    existingLoreToken,
+    existingLoreIndex: editLoreIndex,
+    existingLore,
+    existingLoreBgColor,
+    existingLoreError,
+  };
 };
-
 
 export const pinFileToIpfs = async (
   file: File,
@@ -507,8 +515,8 @@ export const pinFileToIpfs = async (
       name: "LoreImage",
       keyvalues: {
         token_id: tokenId,
-        token_contract: tokenContract
-      }
+        token_contract: tokenContract,
+      },
     })
   );
 
@@ -519,8 +527,8 @@ export const pinFileToIpfs = async (
       "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
       pinata_api_key: process.env.NEXT_PUBLIC_LORE_IMAGES_PINATA_ID,
       pinata_secret_api_key:
-      process.env.NEXT_PUBLIC_LORE_IMAGES_PINATA_SECRET_KEY
-    }
+        process.env.NEXT_PUBLIC_LORE_IMAGES_PINATA_SECRET_KEY,
+    },
   });
 
   if (uploadResponse.status !== 200 && uploadResponse.status !== 201) {
@@ -532,18 +540,18 @@ export const pinFileToIpfs = async (
 };
 
 export const submitV2Lore = async ({
-                                     nsfw,
-                                     tokenId,
-                                     tokenContract,
-                                     loreIndex,
-                                     setErrorMessage,
-                                     setSubmitting,
-                                     body,
-                                     title,
-                                     bgColor,
-                                     provider,
-                                     router
-                                   }: any) => {
+  nsfw,
+  tokenId,
+  tokenContract,
+  loreIndex,
+  setErrorMessage,
+  setSubmitting,
+  body,
+  title,
+  bgColor,
+  provider,
+  router,
+}: any) => {
   console.log("onSubmit", tokenId);
   setErrorMessage(null);
 
@@ -555,7 +563,7 @@ export const submitV2Lore = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setErrorMessage("Need a story to be present");
     return false;
@@ -581,7 +589,7 @@ export const submitV2Lore = async ({
         closeOnClick: true,
         pauseOnHover: true,
         draggable: false,
-        progress: undefined
+        progress: undefined,
       }
     );
     setSubmitting(false);
@@ -591,7 +599,7 @@ export const submitV2Lore = async ({
   const signer = provider.getSigner();
 
   const loreContract = await getBookOfLoreContract({
-    provider: provider
+    provider: provider,
   });
 
   toast.info("Signing wizard ID to verify ownership...", {
@@ -601,7 +609,7 @@ export const submitV2Lore = async ({
     closeOnClick: true,
     pauseOnHover: true,
     draggable: false,
-    progress: undefined
+    progress: undefined,
   });
 
   let signature: string;
@@ -609,10 +617,8 @@ export const submitV2Lore = async ({
   try {
     // Note: we can't use signer.signMessage as it doesn't work consistently across wallets: https://github.com/ethers-io/ethers.js/issues/1840
     signature = await provider.send("personal_sign", [
-      ethers.utils.hexlify(
-        ethers.utils.toUtf8Bytes(tokenId.toString())
-      ),
-      (await signer.getAddress()).toLowerCase()
+      ethers.utils.hexlify(ethers.utils.toUtf8Bytes(tokenId.toString())),
+      (await signer.getAddress()).toLowerCase(),
     ]);
   } catch (err: any) {
     console.log("err: ", err);
@@ -623,14 +629,13 @@ export const submitV2Lore = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setSubmitting(false);
     return false;
   }
 
   toast.dismiss();
-
 
   toast.info("Uploading lore...", {
     position: "top-right",
@@ -639,7 +644,7 @@ export const submitV2Lore = async ({
     closeOnClick: true,
     pauseOnHover: true,
     draggable: false,
-    progress: undefined
+    progress: undefined,
   });
 
   let loreBody: LoreAPISubmitParams = {
@@ -649,7 +654,7 @@ export const submitV2Lore = async ({
     title: title,
     story: body,
     pixel_art: false,
-    bg_color: bgColor
+    bg_color: bgColor,
   };
 
   console.log("loreBody: ", loreBody);
@@ -660,9 +665,9 @@ export const submitV2Lore = async ({
       method: "post",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(loreBody)
+      body: JSON.stringify(loreBody),
     });
 
     apiResponse = await response.json();
@@ -676,7 +681,7 @@ export const submitV2Lore = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setSubmitting(false);
     return false;
@@ -694,7 +699,7 @@ export const submitV2Lore = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setSubmitting(false);
     return false;
@@ -709,26 +714,26 @@ export const submitV2Lore = async ({
       autoClose: false,
       hideProgressBar: false,
       closeOnClick: false,
-      progress: 0
+      progress: 0,
     });
     const connectedLoreContract = await loreContract
       //@ts-ignore
       .connect(signer);
     const tx = loreIndex
       ? await connectedLoreContract.updateLoreMetadataURI(
-        tokenContract,
-        tokenId,
-        loreIndex,
-        `ipfs://${apiResponse.hash}`
-      )
+          tokenContract,
+          tokenId,
+          loreIndex,
+          `ipfs://${apiResponse.hash}`
+        )
       : await connectedLoreContract.addLore(
-        tokenContract,
-        tokenId,
-        0,
-        nsfw,
-        `ipfs://${apiResponse.hash}`,
-        { gasLimit: 300000 } //TODO: actual gas limit
-      );
+          tokenContract,
+          tokenId,
+          0,
+          nsfw,
+          `ipfs://${apiResponse.hash}`,
+          { gasLimit: 300000 } //TODO: actual gas limit
+        );
 
     console.log("tx: ", tx);
     // TODO: this should read the connected network and use that block explorer, not an environment variable
@@ -745,7 +750,7 @@ export const submitV2Lore = async ({
           </p>
         </Flex>
       ),
-      type: toast.TYPE.INFO
+      type: toast.TYPE.INFO,
     });
 
     const receipt = await tx.wait();
@@ -768,7 +773,7 @@ export const submitV2Lore = async ({
             </p>
           </div>
         ),
-        type: toast.TYPE.ERROR
+        type: toast.TYPE.ERROR,
       });
       setSubmitting(false);
       return false;
@@ -782,7 +787,7 @@ export const submitV2Lore = async ({
       closeOnClick: true,
       pauseOnHover: true,
       draggable: false,
-      progress: undefined
+      progress: undefined,
     });
     setSubmitting(false);
     return false;
@@ -800,10 +805,10 @@ export type ImageUploadAPIParams = {
 };
 
 export async function uploadBookOfLoreImage({
-                                              imgDataUri,
-                                              wizardId,
-                                              toastId
-                                            }: {
+  imgDataUri,
+  wizardId,
+  toastId,
+}: {
   wizardId: string; // just for metadata, not technically require
   imgDataUri: string;
   toastId: any;
@@ -819,7 +824,7 @@ export async function uploadBookOfLoreImage({
     address,
     signature,
     wizardId,
-    img: imgBuffer
+    img: imgBuffer,
   };
 
   // const response = await fetch("/api/lore", {
@@ -855,9 +860,9 @@ export async function uploadBookOfLoreImage({
 // we can either do this from the blocks in markdown or maybe it's easier to
 // just upload them when the user drags them over
 export async function uploadBookOfLoreImages({
-                                               imgDataUris,
-                                               wizardId
-                                             }: {
+  imgDataUris,
+  wizardId,
+}: {
   imgDataUris: string[];
   wizardId: string;
 }) {
@@ -866,7 +871,7 @@ export async function uploadBookOfLoreImages({
     autoClose: 60000,
     hideProgressBar: false,
     closeOnClick: false,
-    progress: 0
+    progress: 0,
   });
   await Bluebird.map(imgDataUris, async (imgDataUri) => {
     uploadBookOfLoreImage({ imgDataUri, toastId, wizardId });
@@ -878,11 +883,11 @@ export const titlePrompts = ["The Lore of"];
 export const storyPrompts = [`Delete this text and write your Lore here`];
 
 export const getPendingLoreTxHashRedirection = async ({
-                                                        waitForTxHash,
-                                                        tokenAddress,
-                                                        tokenId,
-                                                        waitedOneRound
-                                                      }: {
+  waitForTxHash,
+  tokenAddress,
+  tokenId,
+  waitedOneRound,
+}: {
   waitForTxHash: string;
   tokenAddress: string;
   tokenId: string;
@@ -898,7 +903,7 @@ export const getPendingLoreTxHashRedirection = async ({
             }
         }
     `,
-    fetchPolicy: "no-cache"
+    fetchPolicy: "no-cache",
   });
   console.log(data);
   if (waitedOneRound || data?.lores[0]) {
@@ -910,14 +915,14 @@ export const getPendingLoreTxHashRedirection = async ({
           isWizardsContract(tokenAddress) ? "wizards" : "souls",
           parseInt(tokenId),
           0
-        )
-      }
+        ),
+      },
     };
   }
 
   return {
     redirect: {
-      destination: `/lore/add?waitForTxHash=${waitForTxHash}&tokenId=${tokenId}&tokenAddress=${tokenAddress}&client=true`
-    }
+      destination: `/lore/add?waitForTxHash=${waitForTxHash}&tokenId=${tokenId}&tokenAddress=${tokenAddress}&client=true`,
+    },
   };
 };

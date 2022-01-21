@@ -7,7 +7,7 @@ import {
   CHARACTER_CONTRACTS,
   FORGOTTEN_PONIES_ADDRESS,
   getSoulsContract,
-  getWizardsContract
+  getWizardsContract,
 } from "../../contracts/ForgottenRunesWizardsCultContract";
 import Button from "../ui/Button";
 import StyledModal from "./StyledModal";
@@ -19,7 +19,10 @@ import productionPoniesData from "../../data/ponies-prod.json";
 
 import { BigNumber } from "ethers";
 import { useEthers } from "@usedapp/core";
-import { Contract as EthCallContract, Provider as EthCallProvider } from "ethcall";
+import {
+  Contract as EthCallContract,
+  Provider as EthCallProvider,
+} from "ethcall";
 import { PONIES_ABI } from "../../contracts/abis";
 import { Web3Provider } from "@ethersproject/providers";
 
@@ -87,9 +90,9 @@ export type onWizardPickedFn = (
 ) => void;
 
 function WizardGrid({
-                      tokens,
-                      onWizardPicked
-                    }: {
+  tokens,
+  onWizardPicked,
+}: {
   tokens: { [tokenAddress: string]: any[] } | undefined;
   onWizardPicked: onWizardPickedFn;
 }) {
@@ -132,19 +135,21 @@ function WizardGrid({
           );
         })}
       </WizardGridLayout>
-      {tokens?.[CHARACTER_CONTRACTS.souls]?.length === 0
-        && tokens?.[CHARACTER_CONTRACTS.wizards]?.length === 0
-        && tokens?.[CHARACTER_CONTRACTS.ponies]?.length === 0 && (
+      {tokens?.[CHARACTER_CONTRACTS.souls]?.length === 0 &&
+        tokens?.[CHARACTER_CONTRACTS.wizards]?.length === 0 &&
+        tokens?.[CHARACTER_CONTRACTS.ponies]?.length === 0 && (
           <NoWizards>
-            The connected wallet doesn't hold any Wizards or Souls or Ponies. Perhaps try
-            another wallet?
+            The connected wallet doesn't hold any Wizards or Souls or Ponies.
+            Perhaps try another wallet?
           </NoWizards>
         )}
     </WizardGridElement>
   );
 }
 
-export function WizardList({ onWizardPicked }: {
+export function WizardList({
+  onWizardPicked,
+}: {
   onWizardPicked: onWizardPickedFn;
 }) {
   const [tokens, setTokens] = useState<{ [tokenAddress: string]: any[] }>();
@@ -158,70 +163,71 @@ export function WizardList({ onWizardPicked }: {
 
         const wizardsContract = await getWizardsContract({
           provider: library,
-          chainId: chainId
+          chainId: chainId,
         });
 
         const soulsContract = await getSoulsContract({
           provider: library,
-          chainId: chainId
+          chainId: chainId,
         });
 
         const ethcallProvider = new EthCallProvider();
         await ethcallProvider.init(library as Web3Provider);
 
-        const poniesContract = new EthCallContract(FORGOTTEN_PONIES_ADDRESS[chainId as number], PONIES_ABI);
+        const poniesContract = new EthCallContract(
+          FORGOTTEN_PONIES_ADDRESS[chainId as number],
+          PONIES_ABI
+        );
         let poniesTokens = await ethcallProvider.tryAll(
-          Array.from({ length: 10 }).map((_, i) => poniesContract.tokenOfOwnerByIndex(account, i))
+          Array.from({ length: 10 }).map((_, i) =>
+            poniesContract.tokenOfOwnerByIndex(account, i)
+          )
         );
 
         poniesTokens = poniesTokens.filter((value: any) => value);
 
         console.log(poniesTokens);
 
-        const [wizardTokens, soulsTokens] = await Promise.all([wizardsContract.tokensOfOwner(account), soulsContract.tokensOfOwner(account)]);
+        const [wizardTokens, soulsTokens] = await Promise.all([
+          wizardsContract.tokensOfOwner(account),
+          soulsContract.tokensOfOwner(account),
+        ]);
 
         setTokens({
           [wizardsContract.address.toLowerCase()]: wizardTokens.map(
             (id: BigNumber) => ({
               ...wizData[id.toNumber()],
-              ["id"]: id.toNumber().toString()
+              ["id"]: id.toNumber().toString(),
             })
           ),
           [soulsContract.address.toLowerCase()]: soulsTokens.map(
             (id: BigNumber) => ({
               ...soulsData[id.toNumber()],
-              id: id.toNumber().toString()
+              id: id.toNumber().toString(),
             })
           ),
-          [FORGOTTEN_PONIES_ADDRESS[chainId as number].toLowerCase()]: poniesTokens.map(
-            (id: BigNumber) => ({
+          [FORGOTTEN_PONIES_ADDRESS[chainId as number].toLowerCase()]:
+            poniesTokens.map((id: BigNumber) => ({
               ...poniesData[id.toNumber()],
-              id: id.toNumber().toString()
-            })
-          )
-
+              id: id.toNumber().toString(),
+            })),
         });
       } catch (err) {
         console.log("err: ", err);
       }
     }
-    if( !tokens && library) run();
+    if (!tokens && library) run();
   }, [tokens, library]);
 
   return <WizardGrid tokens={tokens} onWizardPicked={onWizardPicked} />;
 }
 
-function WizardPickerModal({
-                             onRequestClose,
-                             onWizardPicked
-                           }: any) {
+function WizardPickerModal({ onRequestClose, onWizardPicked }: any) {
   return (
     <WizardPickerModalElement>
       <h1>Pick a Character</h1>
       <WizardPickerFormContainer>
-        <WizardList
-          onWizardPicked={onWizardPicked}
-        />
+        <WizardList onWizardPicked={onWizardPicked} />
       </WizardPickerFormContainer>
       <Button onClick={onRequestClose}>Done</Button>
     </WizardPickerModalElement>
