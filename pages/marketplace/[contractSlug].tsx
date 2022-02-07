@@ -384,6 +384,7 @@ function SideBar({
     fetchTraits();
   }, []);
 
+  // Only add style on mobile if toggle is used
   var testStyle = isOpen == null ? {} : {display: isOpen ? 'flex' : 'none'};
 
   return (
