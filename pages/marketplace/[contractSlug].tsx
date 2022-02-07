@@ -14,12 +14,15 @@ import {
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import Order from "../../components/Marketplace/Order";
+import { ResponsivePixelImg } from "../../components/ResponsivePixelImg";
 
+const chainId = Number(process.env.NEXT_PUBLIC_REACT_APP_CHAIN_ID);
 const marketplaceContracts = [
-  "0x521f9c7505005cfa19a8e5786a9c3c9c9f5e6f42",
-  "0x251b5f14a825c537ff788604ea1b58e49b70726f",
-  "0xf55b615b479482440135ebf1b907fd4c37ed9420",
+  chainId == 1 ? "0x521f9c7505005cfa19a8e5786a9c3c9c9f5e6f42" : "0x521f9c7505005cfa19a8e5786a9c3c9c9f5e6f42",
+  chainId == 1 ? "0x251b5f14a825c537ff788604ea1b58e49b70726f" : "0x95082b505c0752eef1806aef2b6b2d55eea77e4e",
+  chainId == 1 ? "0xf55b615b479482440135ebf1b907fd4c37ed9420": "0x5020c6460b0b26a69c6c0bb8d99ed314f3c39d9e"
 ]
+
 
 const MarketWrapper = styled.div`
   font-size: 20px;
@@ -33,6 +36,7 @@ const MarketWrapper = styled.div`
 
   @media only screen and (max-width: 600px) {
     flex-direction: row;
+    align-content: center;
   }
 `;
 
@@ -43,6 +47,12 @@ const Header = styled.div`
   width: 1200px;
   margin-right: 100px;
   margin-bottom: 5px;
+
+  @media only screen and (max-width: 600px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-right: 0px;
+  }
 `;
 
 const Tabs = styled.div`
@@ -52,6 +62,10 @@ const Tabs = styled.div`
   align-content: center;
   align-self: flex-start;
   margin-left: 20px;
+
+  @media only screen and (max-width: 600px) {
+    margin-left: 0px;
+  }
 
 `;
 
@@ -78,6 +92,11 @@ const Tab  = styled.div`
     color: var(--white);
     cursor: pointer;
   }
+
+
+  @media only screen and (max-width: 600px) {
+    font-size: 20px;
+  }
 `;
 
 const TabSelected  = styled.div`
@@ -102,6 +121,10 @@ const TabSelected  = styled.div`
     border-color: var(--lightGray);
     color: var(--white);
     cursor: pointer;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 20px;
   }
 `;
 
@@ -137,6 +160,18 @@ const CollectionOffer = styled.div`
     cursor: pointer;
   }
 
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+  }
+
+`;
+
+const ScrollWrapper = styled.div`
+  width: 83%;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 const Form = styled.form`
@@ -155,6 +190,10 @@ const Form = styled.form`
     border-color: var(--lightGray);
     background-color: var(--mediumGray);
   }
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: row;
+  }
 `;
 
 const Label = styled.label`
@@ -163,23 +202,39 @@ const Label = styled.label`
   font-size: 18px;
 
   color: var(--lightGray);
+
+  @media only screen and (max-width: 600px) {
+    font-size: 15px;
+  }
 `;
 
-const FilterStyle = styled.div`
+const FilterWrapper = styled.div`
   width: 15%;
   max-width: 200px;
   margin-left: 20px;
+
+  @media only screen and (max-width: 600px) {
+    width: auto;
+    max-width: 1000px;
+    margin-left: 0px;
+  }
+`;
+
+const FilterStyle = styled.div`
   display: flex;
   flex-direction: column;
   
   @media only screen and (max-width: 600px) {
     min-width: 90%;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
     flex-wrap: wrap;
     margin-left: 5vw;
     margin-right: 5vw;
+    display: none;
   }
 `;
+
 
 const ListingDisplay = styled.div`
   width: 250px;
@@ -187,6 +242,8 @@ const ListingDisplay = styled.div`
   margin: 25px;
   display: flex;
   flex-direction: column;
+
+
 `;
 
 const ListingContainer = styled.div`
@@ -216,6 +273,7 @@ const ListingImage = styled.img`
     cursor: pointer;
     border-color: var(--lightGray);
   }
+
 `;
 
 const MarketText = styled.p`
@@ -239,6 +297,17 @@ const FontTraitWrapper = styled.div`
 
 const SoftLink = styled.a`
   text-decoration: none;
+`;
+
+const ExpandButton = styled.div`
+  display: none;
+
+  @media only screen and (max-width: 600px) {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
 `;
 
 function MarketTabs() {
@@ -293,6 +362,8 @@ function SideBar({
   noLoreChange: any;
 }) {
   const [traits, setTraits] = useState([]);
+  const [isOpen, setIsOpen] = useState(true);
+  const toggleIsOpen = () => setIsOpen(!isOpen);
   const router = useRouter();
 
   async function fetchTraits() {
@@ -308,29 +379,36 @@ function SideBar({
   }, []);
 
   return (
-    <FilterStyle>
-      {traits.map((trait: any, index) => (
-        <FontTraitWrapper key={index} style={{ marginTop: "30px" }}>
-          <Select
-            options={getOptions(trait.values)}
-            onChange={(e) => selectionChange(e, trait.key)}
-            isClearable={true}
-            placeholder={trait.key}
-            value={trait.key.toLowerCase() in router.query ? {label: router.query[trait.key.toLowerCase()]} : null}
-            classNamePrefix='select'
-          />
-        </FontTraitWrapper>
-      ))}
-      <Form>
-        <Label>
-          <input type="checkbox" onClick={loreChange} /> Has Lore
-        </Label>
-        <Label>
-          <input type="checkbox" onClick={noLoreChange} /> Has No Lore
-        </Label>
-      </Form>
-      
-    </FilterStyle>
+    <FilterWrapper>
+      <ExpandButton>
+        <a onClick={() => toggleIsOpen()}>
+          <ResponsivePixelImg src="/static/img/icons/social_link_default.png" />
+        </a>
+      </ExpandButton>
+      <FilterStyle style={{display: isOpen ? 'flex' : 'none'}}>
+        {traits.map((trait: any, index) => (
+          <FontTraitWrapper key={index} style={{ marginTop: "30px" }}>
+            <Select
+              options={getOptions(trait.values)}
+              onChange={(e) => selectionChange(e, trait.key)}
+              isClearable={true}
+              placeholder={trait.key}
+              value={trait.key.toLowerCase() in router.query ? {label: router.query[trait.key.toLowerCase()]} : null}
+              classNamePrefix='select'
+            />
+          </FontTraitWrapper>
+        ))}
+        <Form>
+          <Label>
+            <input type="checkbox" onClick={loreChange} /> Has Lore
+          </Label>
+          <Label>
+            <input type="checkbox" onClick={noLoreChange} /> Has No Lore
+          </Label>
+        </Form>
+        
+      </FilterStyle>
+    </FilterWrapper>
   );
 }
 
@@ -354,12 +432,12 @@ function TokenDisplay({
       <ListingDisplay>
         { CONTRACTS[contract].display == 'Wizards' ?
           <ListingImage 
-            src={CONTRACTS[contract].image_url + tokenId + ".png"}
+            src={CONTRACTS[contract].display == 'Wizards' ? CONTRACTS[contract].image_url + tokenId + '/' + tokenId + '.png' : CONTRACTS[contract].image_url + tokenId + ".png"}
             onMouseOver={(e) =>
               (e.currentTarget.src = `https://runes-turnarounds.s3.amazonaws.com/${tokenId}/${tokenId}-walkcycle.gif`)
             }
             onMouseOut={(e) =>
-              (e.currentTarget.src = `${CONTRACTS[contract].image_url}${tokenId}.png`)
+              (e.currentTarget.src =  CONTRACTS[contract].display == 'Wizards' ? `${CONTRACTS[contract].image_url}${tokenId}/${tokenId}.png` : `${CONTRACTS[contract].image_url}${tokenId}.png`)
             } 
           /> :
           <ListingImage 
@@ -479,7 +557,7 @@ function Listings({
         loreChange={() => setHasLore(!hasLore)}
         noLoreChange={() => setHasNoLore(!hasNoLore)}
       />
-      <div style={{ width: "83%" }}>
+      <ScrollWrapper>
         {listings.length > 0 || loaded ? (
           <InfiniteScroll
             dataLength={listings.length}
@@ -515,7 +593,7 @@ function Listings({
         ) : (
           <LoadingCard />
         )}
-      </div>
+      </ScrollWrapper>
     </TabWrapper>
   );
 }
