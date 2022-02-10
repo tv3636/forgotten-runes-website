@@ -94,6 +94,7 @@ const TokenImage = styled.img`
   border: 2px dashed var(--darkGray);
 
   @media only screen and (max-width: 600px) {
+    border: 4px solid var(--darkGray);
     max-width: 300px;
     max-height: 300px;
   }
@@ -101,9 +102,8 @@ const TokenImage = styled.img`
 
 const NameDisplay = styled.div`
   color: white;
-  @media only screen and (max-width: 600px) {
-    
-  }
+  display: flex;
+  flex-direction: column;
 `;
 
 const NameStyle = styled.h2`
@@ -170,7 +170,7 @@ const PriceStyle = styled.div`
 
 const ButtonImage = styled.img`
   margin-right: var(--sp-3);
-  height: 40px;
+  height: 35px;
   image-rendering: pixelated;
   margin-top: 5px;
 
@@ -217,7 +217,7 @@ const ExpirationWrapper = styled.div`
     text-align: center;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 5%;
+    margin: 5% 5% 3% 5%;
   }
 `;
 
@@ -244,7 +244,7 @@ const HorizontalLine = styled.hr`
   margin-bottom: var(--sp2);
 
   @media only screen and (max-width: 600px) {
-    border-color: var(--darkGray);
+    border-color: var(--mediumGray);
     width: 90%;
   }
 `;
@@ -319,6 +319,8 @@ const TraitRow = styled.div`
     background: var(--mediumGray);
     border-color: var(--lightGray);
   }
+
+  transition: all 100ms;
 `;
 
 const TraitType = styled.div`
@@ -340,7 +342,6 @@ const TraitWrapper = styled.div`
     justify-content: center;
     padding: 20px;
   }
-
 `;
 
 const BottomDisplay = styled.div`
@@ -595,7 +596,7 @@ function Owner({
   tokenId: string;
 }) {
   return (
-    <a href={"/address/" + owner} target="_blank" rel="noopener noreferrer">
+    <a href={"https://forgottenrunes.com/address/" + owner} target="_blank" rel="noopener noreferrer">
       {owner?.toLowerCase() == connectedAccount?.toLowerCase()
         ? "you" 
         : ens ? ens : owner.substring(0, 10)}
@@ -623,7 +624,6 @@ const ListingPage = ({
   const [modal, setModal] = useState(false);
   const [marketActionType, setMarketActionType] = useState(OrderType.BUY);
   const { account } = useEthers();
-  const [connected, setConnected] = useState(account);
 
   // hacky workaround to grab location until it's added to metadata/stored locally
   function getCenter(name: string) {
@@ -770,7 +770,9 @@ lorePage.loreMetadataURI,
           <SectionWrapper>
           <SectionDisplay>
             <SectionName>Traits</SectionName>
-            <InfoTooltip tooltip={`Attributes and affinity that define this ${CONTRACTS[contractSlug].singular.toLowerCase()}, encoded on-chain`}/>
+            <a href="https://www.youtube.com/watch?v=GmL4WBj-36o" target="_blank">
+              <InfoTooltip tooltip={`Attributes and affinity that define this ${CONTRACTS[contractSlug].singular.toLowerCase()}, encoded on-chain`}/>
+            </a>
             </SectionDisplay>
           <MidDisplay>
             <TraitDisplay attributes={attributes} contract={contractSlug} />
@@ -781,7 +783,9 @@ lorePage.loreMetadataURI,
           <SectionWrapper>
           <SectionDisplay>
             <SectionName>Lore</SectionName>
-            <InfoTooltip tooltip={`${CONTRACTS[contractSlug].singular} owners can inscribe lore for their ${CONTRACTS[contractSlug].display.toLowerCase()} on-chain`}/>
+            <a href="https://www.forgottenrunes.com/category/lore" target="_blank">
+              <InfoTooltip tooltip={`${CONTRACTS[contractSlug].singular} owners can inscribe lore for their ${CONTRACTS[contractSlug].display.toLowerCase()} on-chain`}/>
+            </a>
           </SectionDisplay>
           <BottomDisplay>
             <LoreWrapper>

@@ -41,8 +41,10 @@ const OverlayWrapper = styled.div`
 
 const Overlay = styled.div`
   width: 60vw;
+  max-width: 1000px;
   height: 60vh;
-  background-color: var(--black); 
+  padding: 40px;
+  background-color: var(--black);
 
   border: dashed;
   border-radius: 15px;
@@ -116,6 +118,8 @@ const PriceInput = styled.input`
     border-color: var(--lightGray);
     color: var(--white);
   }
+
+  transition: all 100ms;
 `;
 
 const Expiration = styled.div`
@@ -142,7 +146,7 @@ const ButtonImage = styled.img`
   margin-top: var(--sp3);
   height: var(--sp3);
   image-rendering: pixelated;
-  height: 40px;
+  height: 35px;
 
   :active {
     position: relative;
